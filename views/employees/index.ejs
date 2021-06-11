@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+
+    <div class="employees content">
+        <h2><%= headline %></h2>
+
+        <% if(employees.length > 0) { %>
+            <% employees.forEach(employee => { %>
+
+                <a href="#">
+                    <h3 class="name"><%= employee.name + ' ' + employee.lastname %></h3>
+                    <p class="department"><%= employee.department %></p>
+                </a>
+
+            <% }); %>
+        <% }  else { %>
+            <p>There are no employees to display...</p>
+        <% } %>    
+    </div>
+</body>
+</html>
