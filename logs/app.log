@@ -138,3 +138,19 @@ Request: Sun, 13 Jun 2021 20:38:45 GMT - POST /translate/json
 Response: status code 500, 11.844 ms
 Request: Sun, 13 Jun 2021 20:40:46 GMT - POST /translate/json 
 Response: status code 200, 4.390 ms
+Request: Sun, 13 Jun 2021 20:41:34 GMT - GET /employees 
+Response: status code 304, 10.113 ms
+Request: Sun, 13 Jun 2021 20:41:56 GMT - GET /employees/4 
+Response: status code 304, 2.441 ms
+Request: Sun, 13 Jun 2021 20:42:03 GMT - GET /department/1/employees 
+Response: status code 304, 1.690 ms
+Request: Sun, 13 Jun 2021 20:42:06 GMT - GET /department/1/employees/false 
+Response: status code 304, 1.607 ms
+Request: Sun, 13 Jun 2021 20:42:40 GMT - GET /employees 
+Response: status code 200, 1.564 ms
+Request: Sun, 13 Jun 2021 20:42:43 GMT - GET /employees 
+Response: status code 200, 1.990 ms
+Request: Sun, 13 Jun 2021 21:53:29 GMT - GET /department/1/employees/false 
+Response: status code 304, 9.589 ms
+Request: Sun, 13 Jun 2021 21:53:32 GMT - GET /department/1/employees/true 
+Response: status code 304, 1.989 ms
