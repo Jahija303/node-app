@@ -3,7 +3,7 @@
 //require employee model
 const Employee = require('../models/employee.js');
 //require employeeSeeder
-const employees = require('../seeders/employeeSeeder');
+let employees = require('../seeders/employeeSeeder');
 
 //controller functions that manage the logic of every /employee request
 const employees_index = (request, response, next) => {
@@ -205,7 +205,7 @@ const employees_delete_by_id = (request, response, next) => {
 
             //check if the employee with the provided id exists 
             if(employees.find(employee => employee.id == id)) {
-                //assign the found employee to a variable which will be forwarded
+                //assign the found employee to a variable
                 let employee = employees.find(employee => employee.id == id)
                 
                 //remove the employee from the array
@@ -228,9 +228,85 @@ const employees_delete_by_id = (request, response, next) => {
 
 const employees_put = (request, response, next) => {
 
-    //
-    const id = request.body.id;
+    try {
 
+        //read the id from the request
+        const id = request.body.id;
+
+        if(!id) {
+            const err = new Error("Please enter employee ID...");
+            err.status = 404;
+            throw(err);
+        }
+
+        if(isNaN(id)) {
+            const err = new Error("Employee with the provided ID does not exsist...");
+            err.status = 400;
+            throw(err);
+        }
+        //if it is a number, proceed with code
+        else {
+
+            //check if the employee with the provided id exists 
+            if(employees.find(employee => employee.id == id)) {
+
+                //assign the found employee to a variable
+                let employee = employees.find(employee => employee.id == id)
+
+                //assign the index of the employee
+                let index = employees.indexOf(employee);
+
+                //assign each value from the request body to the employee model
+                employee.id = id;
+
+                if(request.body.name) {
+                    employee.name = request.body.name;
+                }
+
+                if(request.body.lastname) {
+                    employee.lastname = request.body.lastname;
+                }
+
+                //check the department id
+                let departmentid = request.body.departmentid;
+                if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+                    departmentid = parseInt(departmentid);
+                    employee.departmentid = departmentid;   
+                } else {
+                    const err = new Error("Parameter you provided is not a valid department ID...");
+                    err.status = 400;
+                    throw(err);
+                }
+
+                //check if the status syntax is valid
+                let status = request.body.status;
+                if(status == 'true' || status == 'false') {
+                    status = JSON.parse(status);
+                    employee.status = status;
+                } else {
+                    const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
+                    err.status = 400;
+                    throw(err);
+                }
+
+
+                //update the main array with the new employee
+                employees[index] = employee;
+
+                //render the employees page
+                response.redirect('/employees');
+
+            } else {
+                //render the error page if an employee has not been found
+                const err = new Error("The Employee you are looking for does not exist...");
+                err.status = 404;
+                throw(err);
+            }
+        }
+
+    } catch(err) {
+        next(err);
+    }
 
 }
 
