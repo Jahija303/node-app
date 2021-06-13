@@ -11,6 +11,8 @@ router.post('/', employeesController.employees_create_post)
 router.get('/create', employeesController.employees_create_get);
 router.get('/:status', employeesController.employees_index_status);
 router.get('/:id', employeesController.employees_details);
+router.delete('/:id', employeesController.employees_delete_by_id);
+router.put('/', employeesController.employees_put);
 
 //export router
 module.exports = router;

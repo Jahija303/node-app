@@ -1,4 +1,4 @@
-//employees_index, employee_index_status, employees_details, employees_department, employees_create_get, employees_create_post
+//employees_index, employee_index_status, employees_details, employees_department, employees_create_get, employees_create_post, employees_delete_by_id, employees_put
 
 //require employee model
 const Employee = require('../models/employee.js');
@@ -6,130 +6,232 @@ const Employee = require('../models/employee.js');
 const employees = require('../seeders/employeeSeeder');
 
 //controller functions that manage the logic of every /employee request
-const employees_index = (request, response) => {
-    response.render('employees/index', { title: 'Employees', employees: employees, headline: 'All Employees' });
+const employees_index = (request, response, next) => {
+    //error handling
+    try {
+        response.render('employees/index', { title: 'Employees', employees: employees, headline: 'All Employees' });
+    } catch(err) {
+        next(err);
+    }
 }
 
 const employees_index_status = (request, response, next) => {
-    //get the status value from url
-    let status = request.params.status;
 
-    //check if it is indeed a status parameter
-    if(status == 'true' || status == 'false') {
-        //parse the string to a bool value
-        status = JSON.parse(status);
-        
-        //filter the array to only contain employees with matching status
-        let employeesByStatus = employees.filter(employee => employee.status == status);
+    //error handling
+    try {
+        //get the status value from url
+        let status = request.params.status;
 
-        //render the response with new array
-        response.render('employees/index', { title: 'Employees', employees: employeesByStatus, headline: `All ${status ? 'active' : 'inactive'} employees` });
-    } else {
-        //continue with the request matching against the uri's
-        next();
-    } 
+        //check if it is indeed a status parameter
+        if(status == 'true' || status == 'false') {
+            //parse the string to a bool value
+            status = JSON.parse(status);
+            
+            //filter the array to only contain employees with matching status
+            let employeesByStatus = employees.filter(employee => employee.status == status);
+
+            //render the response with new array
+            response.render('employees/index', { title: 'Employees', employees: employeesByStatus, headline: `All ${status ? 'active' : 'inactive'} employees` });
+        } else {
+            //continue with the request matching against the uri's
+            next();
+        }
+    } catch(err) {
+        next(err);
+    }
 }
 
-const employees_details = (request, response) => {
+const employees_details = (request, response, next) => {
 
-    //get the id from the url
-    const id = request.params.id;
+    //error handling
+    try {
+        //get the id from the URI
+        const id = request.params.id;
 
-    //check if provided parameter is not a number
-    if(isNaN(id)) {
-        response.status(400).render('error', { title: 'Error', error: 'Parameter you provided is not a valid ID' });
-    } 
-    //if it is a number, proceed with code
-    else {
+        //check if provided parameter is not a number
+        if(isNaN(id)) {
+            const err = new Error("The parameter you provided is not a valid employee ID...");
+            err.status = 400;
+            throw(err);
+        } 
+        //if it is a number, proceed with code
+        else {
 
-        //check if the employee with the provided id exists 
-        if(employees.find(employee => employee.id == id)) {
+            //check if the employee with the provided id exists 
+            if(employees.find(employee => employee.id == id)) {
+                //assign the found employee to a variable which will be forwarded
+                let employee = employees.find(employee => employee.id == id)
+                
+                //render the response with the selected employee
+                response.render('employees/detail', { title: 'Employee Detail', employee: employee });
 
-            //assing the employee to a variable which will be forwarded
-            let employee = employees.find(employee => employee.id == id)
-            
-            //render the response with the selected employee
-            response.render('employees/detail', { title: 'Employee Detail', employee: employee });
-
-        } else {
-            //render the error page if an employee has not been found
-            response.status(400).render('error', { title: 'Not Found', error: 'Employee does not exists...' });
+            } else {
+                //render the error page if an employee has not been found
+                const err = new Error("The Employee you are looking for does not exist...");
+                err.status = 404;
+                throw(err);
+            }
         }
+    } catch(err) {
+        next(err);
     }
 
 }
 
-const employees_department = (request, response) => {
+const employees_department = (request, response, next) => {
 
     //default status value
     let status = true;
 
-    //if status value exists in the URI
-    if(request.params.status) {
-        status = JSON.parse(request.params.status);
-    }
-
-    //get the department id from the URI
-    const departmentid = request.params.departmentid;
-
-    //check if provided parameter is a number, and check if it is a valid one (0-2)
-    if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
-
-        //filter the array to match the employees by department and add the provided status filter
-        let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
-
-        //declare department variable (for frontend headline purposes)
-        let department;
-
-        //assign string value based on department id
-        switch(departmentid) {
-            case '0':
-                department = 'Development';
-                break;
-            case '1':
-                department = 'Management';
-                break;
-            case '2':
-                department = 'HR';
-                break;
+    try {
+        //if status value exists in the URI
+        if(request.params.status) {
+            status = request.params.status;
+            
+            //check if the status syntax is valid
+            if(status == 'true' || status == 'false') {
+                status = JSON.parse(status);
+            } else {
+                const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
+                err.status = 400;
+                throw(err);
+            }
         }
 
-        //render the response
-        response.render('employees/index', { title: 'Employees', employees: employeesByDepartment, headline: `All Employees in the ${department} department` });
-    }
-    else {
-        //render the error page if the department id is not valid or not a number
-        response.status(400).render('error', { title: 'Error', error: 'Parameter you provided is not a valid department ID' });
+        //get the department id from the URI
+        const departmentid = request.params.departmentid;
+
+        //check if provided parameter is a number, and check if it is a valid one (0-2)
+        if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+
+            //filter the array to match the employees by department and add the provided status filter
+            let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
+
+            //declare department variable (for frontend headline purposes)
+            let department;
+
+            //assign string value based on department id
+            switch(departmentid) {
+                case '0':
+                    department = 'Development';
+                    break;
+                case '1':
+                    department = 'Management';
+                    break;
+                case '2':
+                    department = 'HR';
+                    break;
+            }
+
+            //render the response
+            response.render('employees/index', { title: 'Employees', employees: employeesByDepartment, headline: `All Employees in the ${department} department` });
+        }
+        else {
+            //render the error page if the department id is not valid or not a number
+            const err = new Error("Parameter you provided is not a valid department ID...");
+            err.status = 400;
+            throw(err);
+        }
+    } catch(err) {
+        next(err);
     }
 }
 
-const employees_create_get = (request, response) => {
-    response.render('employees/create', { title: 'Add an employee' });
+const employees_create_get = (request, response, next) => {
+    try {
+        response.render('employees/create', { title: 'Add an employee' });
+    } catch(err) {
+        next(err);
+    }
 }
 
-const employees_create_post = (request, response) => {
+const employees_create_post = (request, response, next) => {
     
     try {
         //check if the input fields are valid..
         let id = employees[employees.length-1].id + 1;
         let name = request.body.name;
         let lastname = request.body.lastname;
-        let department = parseInt(request.body.department);
-        let status = JSON.parse(request.body.status);
+        
+        //check the department id
+        let departmentid = request.body.department;
+        if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+            departmentid = parseInt(departmentid);   
+        } else {
+            const err = new Error("Parameter you provided is not a valid department ID...");
+            err.status = 400;
+            throw(err);
+        }
+
+        //check if the status syntax is valid
+        let status = request.body.status;
+        if(status == 'true' || status == 'false') {
+            status = JSON.parse(status);
+        } else {
+            const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
+            err.status = 400;
+            throw(err);
+        }
 
         //create a new instance of the Employee class with the provided fields
-        const newEmployee = new Employee(id, name, lastname, department, status);
+        const newEmployee = new Employee(id, name, lastname, departmentid, status);
 
         //add the new employee to the array
         employees.push(newEmployee);
-        
-    } catch(e) {
-        //render the error page if an error is thrown
-        response.status(400).render('error', { title: 'Error', error: e });
-    }
 
-    //redirect to employees page
-    response.redirect('/employees');
+        //redirect to employees page
+        response.redirect('/employees');
+        
+    } catch(err) {
+        //render the error page if an error is thrown
+        next(err);
+    }
+}
+
+const employees_delete_by_id = (request, response, next) => {
+    //error handling
+    try {
+        //get the id from the URI
+        const id = request.params.id;
+
+        //check if provided parameter is not a number
+        if(isNaN(id)) {
+            const err = new Error("The parameter you provided is not a valid employee ID...");
+            err.status = 400;
+            throw(err);
+        } 
+        //if it is a number, proceed with code
+        else {
+
+            //check if the employee with the provided id exists 
+            if(employees.find(employee => employee.id == id)) {
+                //assign the found employee to a variable which will be forwarded
+                let employee = employees.find(employee => employee.id == id)
+                
+                //remove the employee from the array
+                employees.splice(employees.indexOf(employee), 1);
+
+                //render the employees page
+                response.redirect('/employees');
+
+            } else {
+                //render the error page if an employee has not been found
+                const err = new Error("The Employee you are looking for does not exist...");
+                err.status = 404;
+                throw(err);
+            }
+        }
+    } catch(err) {
+        next(err);
+    }
+}
+
+const employees_put = (request, response, next) => {
+
+    //
+    const id = request.body.id;
+
+
 }
 
 //exporting the functions
@@ -139,5 +241,7 @@ module.exports = {
     employees_details,
     employees_department,
     employees_create_get,
-    employees_create_post
+    employees_create_post,
+    employees_delete_by_id,
+    employees_put
 }

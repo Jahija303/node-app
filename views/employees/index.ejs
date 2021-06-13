@@ -11,9 +11,9 @@
         <% if(employees.length > 0) { %>
             <% employees.forEach(employee => { %>
 
-                <a href="#">
+                <a href="/employees/<%= employee.id %>">
                     <h3 class="name"><%= employee.name + ' ' + employee.lastname %></h3>
-                    <p class="department"><%= employee.department %></p>
+                    <p class="department">Department: <%= employee.departmentid == 0 ? 'Development' : employee.departmentid == 1 ? 'Management' : 'HR' %></p>
                 </a>
 
             <% }); %>

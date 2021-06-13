@@ -39,5 +39,12 @@ app.use('/department', departmentRoutes);
 
 //renders 404 page if none of the URI's match
 app.use((request, response) => {
-    response.status(404).render('error', { title: '404', error: 'OOPS, page not found' });
+    response.status(404).render('error', { title: 'Error 404', error: 'OOPS, page not found' });
+});
+
+//catch-all error handler
+app.use((err, request, response, next) => {
+    const status = err.status || 500;
+    response.status(status);
+    response.render('error', { title: 'Error ' + status, error: err });
 });
