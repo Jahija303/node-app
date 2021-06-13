@@ -3,9 +3,9 @@
 //require employee model
 const Employee = require('../models/employee.js');
 //require validator functions
-const validator = require('../functions/validator.js');
+const validator = require('../util/validator.js');
 //require errorHanlder functions
-const errorHandler = require('../functions/errorHandler');
+const errorHandler = require('../util/errorHandler');
 //require employeeSeeder
 let employees = require('../seeders/employeeSeeder');
 
