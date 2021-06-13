@@ -2,6 +2,10 @@
 
 //require employee model
 const Employee = require('../models/employee.js');
+//require validator functions
+const validator = require('../functions/validator.js');
+//require errorHanlder functions
+const errorHandler = require('../functions/errorHandler');
 //require employeeSeeder
 let employees = require('../seeders/employeeSeeder');
 
@@ -23,7 +27,7 @@ const employees_index_status = (request, response, next) => {
         let status = request.params.status;
 
         //check if it is indeed a status parameter
-        if(status == 'true' || status == 'false') {
+        if(validator.isStringBool(status)) {
             //parse the string to a bool value
             status = JSON.parse(status);
             
@@ -50,16 +54,14 @@ const employees_details = (request, response, next) => {
 
         //check if provided parameter is not a number
         if(isNaN(id)) {
-            const err = new Error("The parameter you provided is not a valid employee ID...");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("The parameter you provided is not a valid employee ID...", 400);
         } 
         //if it is a number, proceed with code
         else {
 
             //check if the employee with the provided id exists 
             if(employees.find(employee => employee.id == id)) {
-                //assign the found employee to a variable which will be forwarded
+                //assign the found employee to a variable which will be forwarded to frontend
                 let employee = employees.find(employee => employee.id == id)
                 
                 //render the response with the selected employee
@@ -67,9 +69,7 @@ const employees_details = (request, response, next) => {
 
             } else {
                 //render the error page if an employee has not been found
-                const err = new Error("The Employee you are looking for does not exist...");
-                err.status = 404;
-                throw(err);
+                errorHandler.throwError("The Employee you are looking for does not exist...", 404);
             }
         }
     } catch(err) {
@@ -89,12 +89,10 @@ const employees_department = (request, response, next) => {
             status = request.params.status;
             
             //check if the status syntax is valid
-            if(status == 'true' || status == 'false') {
+            if(validator.isStringBool(status)) {
                 status = JSON.parse(status);
             } else {
-                const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
-                err.status = 400;
-                throw(err);
+                errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
             }
         }
 
@@ -102,7 +100,7 @@ const employees_department = (request, response, next) => {
         const departmentid = request.params.departmentid;
 
         //check if provided parameter is a number, and check if it is a valid one (0-2)
-        if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+        if(validator.validateDepartment(departmentid)) {
 
             //filter the array to match the employees by department and add the provided status filter
             let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
@@ -128,9 +126,7 @@ const employees_department = (request, response, next) => {
         }
         else {
             //render the error page if the department id is not valid or not a number
-            const err = new Error("Parameter you provided is not a valid department ID...");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
         }
     } catch(err) {
         next(err);
@@ -154,23 +150,19 @@ const employees_create_post = (request, response, next) => {
         let lastname = request.body.lastname;
         
         //check the department id
-        let departmentid = request.body.department;
-        if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+        let departmentid = request.body.departmentid;
+        if(validator.validateDepartment(departmentid)) {
             departmentid = parseInt(departmentid);   
         } else {
-            const err = new Error("Parameter you provided is not a valid department ID...");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
         }
 
         //check if the status syntax is valid
         let status = request.body.status;
-        if(status == 'true' || status == 'false') {
+        if(validator.isStringBool(status)) {
             status = JSON.parse(status);
         } else {
-            const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
         }
 
         //create a new instance of the Employee class with the provided fields
@@ -196,13 +188,10 @@ const employees_delete_by_id = (request, response, next) => {
 
         //check if provided parameter is not a number
         if(isNaN(id)) {
-            const err = new Error("The parameter you provided is not a valid employee ID...");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("The parameter you provided is not a valid employee ID...", 400);
         } 
         //if it is a number, proceed with code
         else {
-
             //check if the employee with the provided id exists 
             if(employees.find(employee => employee.id == id)) {
                 //assign the found employee to a variable
@@ -216,9 +205,7 @@ const employees_delete_by_id = (request, response, next) => {
 
             } else {
                 //render the error page if an employee has not been found
-                const err = new Error("The Employee you are looking for does not exist...");
-                err.status = 404;
-                throw(err);
+                errorHandler.throwError("The Employee you are looking for does not exist...", 404);
             }
         }
     } catch(err) {
@@ -234,15 +221,11 @@ const employees_put = (request, response, next) => {
         const id = request.body.id;
 
         if(!id) {
-            const err = new Error("Please enter employee ID...");
-            err.status = 404;
-            throw(err);
+            errorHandler.throwError("Please enter an employee ID...", 400);
         }
 
         if(isNaN(id)) {
-            const err = new Error("Employee with the provided ID does not exsist...");
-            err.status = 400;
-            throw(err);
+            errorHandler.throwError("Invalid ID, please provide a valid one...", 404);
         }
         //if it is a number, proceed with code
         else {
@@ -269,26 +252,21 @@ const employees_put = (request, response, next) => {
 
                 //check the department id
                 let departmentid = request.body.departmentid;
-                if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
+                if(validator.validateDepartment(departmentid)) {
                     departmentid = parseInt(departmentid);
                     employee.departmentid = departmentid;   
                 } else {
-                    const err = new Error("Parameter you provided is not a valid department ID...");
-                    err.status = 400;
-                    throw(err);
+                    errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
                 }
 
                 //check if the status syntax is valid
                 let status = request.body.status;
-                if(status == 'true' || status == 'false') {
+                if(validator.isStringBool(status)) {
                     status = JSON.parse(status);
                     employee.status = status;
                 } else {
-                    const err = new Error("Parameter you provided is not a valid status option, please use true/false..");
-                    err.status = 400;
-                    throw(err);
+                    errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
                 }
-
 
                 //update the main array with the new employee
                 employees[index] = employee;
@@ -298,9 +276,7 @@ const employees_put = (request, response, next) => {
 
             } else {
                 //render the error page if an employee has not been found
-                const err = new Error("The Employee you are looking for does not exist...");
-                err.status = 404;
-                throw(err);
+                errorHandler.throwError("The Employee you are looking for does not exist...", 404);
             }
         }
 
