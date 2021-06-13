@@ -7,6 +7,8 @@ const router = express.Router();
 
 //all employee routes
 router.get('/', employeesController.employees_index);
+router.post('/', employeesController.employees_create_post)
+router.get('/create', employeesController.employees_create_get);
 router.get('/:status', employeesController.employees_index_status);
 router.get('/:id', employeesController.employees_details);
 

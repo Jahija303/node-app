@@ -1,5 +1,7 @@
-//employees_index, employee_index_status, employees_details, employees_department
+//employees_index, employee_index_status, employees_details, employees_department, employees_create_get, employees_create_post
 
+//require employee model
+const Employee = require('../models/employee.js');
 //require employeeSeeder
 const employees = require('../seeders/employeeSeeder');
 
@@ -40,13 +42,11 @@ const employees_details = (request, response) => {
     //if it is a number, proceed with code
     else {
 
-        //declare employee variable out of the 'if statement' scope
-        let employee;
-
-        //check if employee exists and assign him to a new variable to be forwarded
+        //check if the employee with the provided id exists 
         if(employees.find(employee => employee.id == id)) {
 
-            employee = employees.find(employee => employee.id == id);
+            //assing the employee to a variable which will be forwarded
+            let employee = employees.find(employee => employee.id == id)
             
             //render the response with the selected employee
             response.render('employees/detail', { title: 'Employee Detail', employee: employee });
@@ -61,16 +61,24 @@ const employees_details = (request, response) => {
 
 const employees_department = (request, response) => {
 
+    //default status value
+    let status = true;
+
+    //if status value exists in the URI
+    if(request.params.status) {
+        status = JSON.parse(request.params.status);
+    }
+
     //get the department id from the URI
     const departmentid = request.params.departmentid;
 
     //check if provided parameter is a number, and check if it is a valid one (0-2)
     if(!isNaN(departmentid) && departmentid >= 0 && departmentid <=2) {
 
-        //filter the array to match the employees by department
-        let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == true);
+        //filter the array to match the employees by department and add the provided status filter
+        let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
 
-        //declare department variable
+        //declare department variable (for frontend headline purposes)
         let department;
 
         //assign string value based on department id
@@ -89,11 +97,39 @@ const employees_department = (request, response) => {
         //render the response
         response.render('employees/index', { title: 'Employees', employees: employeesByDepartment, headline: `All Employees in the ${department} department` });
     }
-    //if it is not number, or if is invalid - proceed with code
     else {
-        //render the error page if the department id is not valid
+        //render the error page if the department id is not valid or not a number
         response.status(400).render('error', { title: 'Error', error: 'Parameter you provided is not a valid department ID' });
     }
+}
+
+const employees_create_get = (request, response) => {
+    response.render('employees/create', { title: 'Add an employee' });
+}
+
+const employees_create_post = (request, response) => {
+    
+    try {
+        //check if the input fields are valid..
+        let id = employees[employees.length-1].id + 1;
+        let name = request.body.name;
+        let lastname = request.body.lastname;
+        let department = parseInt(request.body.department);
+        let status = JSON.parse(request.body.status);
+
+        //create a new instance of the Employee class with the provided fields
+        const newEmployee = new Employee(id, name, lastname, department, status);
+
+        //add the new employee to the array
+        employees.push(newEmployee);
+        
+    } catch(e) {
+        //render the error page if an error is thrown
+        response.status(400).render('error', { title: 'Error', error: e });
+    }
+
+    //redirect to employees page
+    response.redirect('/employees');
 }
 
 //exporting the functions
@@ -101,5 +137,7 @@ module.exports = {
     employees_index,
     employees_index_status,
     employees_details,
-    employees_department
+    employees_department,
+    employees_create_get,
+    employees_create_post
 }
