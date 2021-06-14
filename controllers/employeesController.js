@@ -1,4 +1,4 @@
-//employees_index, employee_index_status, employees_details, employees_department, employees_create_get, employees_create_post, employees_delete_by_id, employees_put
+//employees_index, employee_index_status, employees_details, employees_department, employees_create_post, employees_delete_by_id, employees_put
 
 //require employee model
 const Employee = require('../models/employee.js');
@@ -13,7 +13,7 @@ let employees = require('../seeders/employeeSeeder');
 const employees_index = (request, response, next) => {
     //error handling
     try {
-        response.render('employees/index', { title: 'Employees', employees: employees, headline: 'All Employees' });
+        response.json({ employees: employees });
     } catch(err) {
         next(err);
     }
@@ -35,7 +35,7 @@ const employees_index_status = (request, response, next) => {
             let employeesByStatus = employees.filter(employee => employee.status == status);
 
             //render the response with new array
-            response.render('employees/index', { title: 'Employees', employees: employeesByStatus, headline: `All ${status ? 'active' : 'inactive'} employees` });
+            response.json({ employees: employeesByStatus });
         } else {
             //continue with the request matching against the uri's
             next();
@@ -65,7 +65,7 @@ const employees_details = (request, response, next) => {
                 let employee = employees.find(employee => employee.id == id)
                 
                 //render the response with the selected employee
-                response.render('employees/detail', { title: 'Employee Detail', employee: employee });
+                response.json({ employee: employee });
 
             } else {
                 //render the error page if an employee has not been found
@@ -105,37 +105,13 @@ const employees_department = (request, response, next) => {
             //filter the array to match the employees by department and add the provided status filter
             let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
 
-            //declare department variable (for frontend headline purposes)
-            let department;
-
-            //assign string value based on department id
-            switch(departmentid) {
-                case '0':
-                    department = 'Development';
-                    break;
-                case '1':
-                    department = 'Management';
-                    break;
-                case '2':
-                    department = 'HR';
-                    break;
-            }
-
             //render the response
-            response.render('employees/index', { title: 'Employees', employees: employeesByDepartment, headline: `All Employees in the ${department} department` });
+            response.json({ employees: employeesByDepartment });
         }
         else {
             //render the error page if the department id is not valid or not a number
             errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
         }
-    } catch(err) {
-        next(err);
-    }
-}
-
-const employees_create_get = (request, response, next) => {
-    try {
-        response.render('employees/create', { title: 'Add an employee' });
     } catch(err) {
         next(err);
     }
@@ -254,7 +230,7 @@ const employees_put = (request, response, next) => {
                 let departmentid = request.body.departmentid;
                 if(validator.validateDepartment(departmentid)) {
                     departmentid = parseInt(departmentid);
-                    employee.departmentid = departmentid;   
+                    employee.departmentid = departmentid;
                 } else {
                     errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
                 }
@@ -283,7 +259,6 @@ const employees_put = (request, response, next) => {
     } catch(err) {
         next(err);
     }
-
 }
 
 //exporting the functions
@@ -292,7 +267,6 @@ module.exports = {
     employees_index_status,
     employees_details,
     employees_department,
-    employees_create_get,
     employees_create_post,
     employees_delete_by_id,
     employees_put

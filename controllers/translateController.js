@@ -27,7 +27,7 @@ const translate_json = (request, response, next) => {
             true
           );
           
-          response.status(200).send(jsonData);
+          response.status(200).json(jsonData);
 
     } catch(err) {
         next(err);

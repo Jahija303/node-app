@@ -154,3 +154,87 @@ Request: Sun, 13 Jun 2021 21:53:29 GMT - GET /department/1/employees/false
 Response: status code 304, 9.589 ms
 Request: Sun, 13 Jun 2021 21:53:32 GMT - GET /department/1/employees/true 
 Response: status code 304, 1.989 ms
+Request: Sun, 13 Jun 2021 22:20:13 GMT - GET / 
+Response: status code 302, 4.312 ms
+Request: Sun, 13 Jun 2021 22:20:13 GMT - GET /employees 
+Response: status code 304, 11.526 ms
+Request: Sun, 13 Jun 2021 22:20:16 GMT - GET /employees/1 
+Response: status code 304, 2.202 ms
+Request: Sun, 13 Jun 2021 22:20:21 GMT - GET /department/1/employees 
+Response: status code 304, 2.508 ms
+Request: Sun, 13 Jun 2021 22:20:24 GMT - GET /department/1/employees/false 
+Response: status code 304, 1.658 ms
+Request: Sun, 13 Jun 2021 23:14:25 GMT - GET / 
+Response: status code 302, 4.738 ms
+Request: Sun, 13 Jun 2021 23:14:25 GMT - GET /employees 
+Response: status code 304, 12.348 ms
+Request: Sun, 13 Jun 2021 23:16:46 GMT - GET /employees/98 
+Response: status code 404, 2.903 ms
+Request: Sun, 13 Jun 2021 23:17:10 GMT - GET /employees/98 
+Response: status code 404, 2.850 ms
+Request: Sun, 13 Jun 2021 23:19:09 GMT - GET /employees/98 
+Response: status code 404, 2.885 ms
+Request: Sun, 13 Jun 2021 23:19:26 GMT - GET /employees/98 
+Response: status code 404, 0.577 ms
+Request: Sun, 13 Jun 2021 23:19:31 GMT - GET /favicon.ico 
+Response: status code 404, 0.367 ms
+Request: Sun, 13 Jun 2021 23:20:56 GMT - POST /translate/json 
+Response: status code 200, 4.609 ms
+Request: Sun, 13 Jun 2021 23:22:05 GMT - GET /employees/ 
+Response: status code 200, 2.417 ms
+Request: Sun, 13 Jun 2021 23:22:23 GMT - GET /employees/ 
+Response: status code 304, 0.643 ms
+Request: Sun, 13 Jun 2021 23:22:34 GMT - GET /favicon.ico 
+Response: status code 404, 0.492 ms
+Request: Sun, 13 Jun 2021 23:22:45 GMT - GET /employees/ 
+Response: status code 304, 4.392 ms
+Request: Sun, 13 Jun 2021 23:22:46 GMT - GET /employees/ 
+Response: status code 304, 0.624 ms
+Request: Sun, 13 Jun 2021 23:22:47 GMT - GET /employees/ 
+Response: status code 304, 0.545 ms
+Request: Sun, 13 Jun 2021 23:23:09 GMT - GET /employees/ 
+Response: status code 304, 0.372 ms
+Request: Sun, 13 Jun 2021 23:23:52 GMT - GET /employees/ 
+Response: status code 304, 3.076 ms
+Request: Sun, 13 Jun 2021 23:26:16 GMT - GET /employees/true 
+Response: status code 200, 2.590 ms
+Request: Sun, 13 Jun 2021 23:26:19 GMT - GET /employees/false 
+Response: status code 200, 0.556 ms
+Request: Sun, 13 Jun 2021 23:26:48 GMT - GET /employees/1 
+Response: status code 200, 2.620 ms
+Request: Sun, 13 Jun 2021 23:26:52 GMT - GET /employees/2 
+Response: status code 200, 0.490 ms
+Request: Sun, 13 Jun 2021 23:27:28 GMT - GET /department/1/employees 
+Response: status code 200, 2.434 ms
+Request: Sun, 13 Jun 2021 23:27:31 GMT - GET /department/1/employees/false 
+Response: status code 200, 0.626 ms
+Request: Sun, 13 Jun 2021 23:27:36 GMT - GET /department/0/employees/false 
+Response: status code 200, 0.343 ms
+Request: Sun, 13 Jun 2021 23:27:39 GMT - GET /department/0/employees/true 
+Response: status code 200, 0.350 ms
+Request: Sun, 13 Jun 2021 23:27:42 GMT - GET /department/2/employees/true 
+Response: status code 200, 0.282 ms
+Request: Sun, 13 Jun 2021 23:27:45 GMT - GET /department/2/employees/false 
+Response: status code 200, 0.291 ms
+Request: Sun, 13 Jun 2021 23:27:48 GMT - GET /department/2/employees/true 
+Response: status code 304, 0.390 ms
+Request: Sun, 13 Jun 2021 23:31:48 GMT - POST /translate/json 
+Response: status code 200, 4.180 ms
+Request: Sun, 13 Jun 2021 23:31:50 GMT - POST /translate/json 
+Response: status code 200, 0.738 ms
+Request: Sun, 13 Jun 2021 23:41:14 GMT - GET /employees 
+Response: status code 200, 2.409 ms
+Request: Mon, 14 Jun 2021 00:01:11 GMT - GET /employees 
+Response: status code 304, 0.602 ms
+Request: Mon, 14 Jun 2021 00:19:24 GMT - GET /employees 
+Response: status code 304, 0.265 ms
+Request: Mon, 14 Jun 2021 00:25:44 GMT - GET /employees 
+Response: status code 304, 0.294 ms
+Request: Mon, 14 Jun 2021 00:25:48 GMT - GET /employees 
+Response: status code 304, 0.279 ms
+Request: Mon, 14 Jun 2021 00:25:49 GMT - GET /employees 
+Response: status code 304, 0.385 ms
+Request: Mon, 14 Jun 2021 00:25:54 GMT - GET /employees 
+Response: status code 304, 0.310 ms
+Request: Mon, 14 Jun 2021 00:26:26 GMT - GET /employees 
+Response: status code 304, 0.269 ms
