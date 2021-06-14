@@ -14,7 +14,6 @@ const employees_index = (request, response, next) => {
     //error handling
     try {
         response.json({ employees: employees });
-        
     } catch(err) {
         next(err);
     }
@@ -91,8 +90,10 @@ const employees_department = (request, response, next) => {
             
             //check if the status syntax is valid
             if(validator.isStringBool(status)) {
+                //parse the status as bool
                 status = JSON.parse(status);
             } else {
+                //throw an error if it is not a valid status option
                 errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
             }
         }
@@ -228,21 +229,24 @@ const employees_put = (request, response, next) => {
                 }
 
                 //check the department id
-                let departmentid = request.body.departmentid;
-                if(validator.validateDepartment(departmentid)) {
-                    departmentid = parseInt(departmentid);
-                    employee.departmentid = departmentid;
-                } else {
-                    errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
+                if(request.body.departmentid) {
+
+                    if(validator.validateDepartment(request.body.departmentid)) {
+                        let departmentid = parseInt(request.body.departmentid);
+                        employee.departmentid = departmentid;
+                    } else {
+                        errorHandler.throwError("Parameter you provided is not a valid department ID...", 400);
+                    }
                 }
 
                 //check if the status syntax is valid
-                let status = request.body.status;
-                if(validator.isStringBool(status)) {
-                    status = JSON.parse(status);
-                    employee.status = status;
-                } else {
-                    errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
+                if(request.body.status) {
+                    if(validator.isStringBool(request.body.status)) {
+                        let status = JSON.parse(request.body.status);
+                        employee.status = status;
+                    } else {
+                        errorHandler.throwError("Parameter you provided is not a valid status option, please use true/false..", 400);
+                    }
                 }
 
                 //update the main array with the new employee

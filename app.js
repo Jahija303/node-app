@@ -36,7 +36,7 @@ app.listen(3000, () => {
     console.log('Listening for requests at http://localhost:3000');
 });
 
-//cors - use it before all route definitions
+//cors - error fixing for angular data read
 app.use(cors({origin: 'http://localhost:4200'}));
 
 //ROUTES
