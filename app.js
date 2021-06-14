@@ -4,6 +4,8 @@ const express = require('express');
 const morgan = require('morgan');
 //require file system
 const fs = require('fs')
+//require cors
+const cors = require('cors');
 //require paths
 const path = require('path');
 //require employee routes
@@ -33,6 +35,9 @@ app.use(morgan('Response: status code :status, :response-time ms', { stream: acc
 app.listen(3000, () => {
     console.log('Listening for requests at http://localhost:3000');
 });
+
+//cors - use it before all route definitions
+app.use(cors({origin: 'http://localhost:4200'}));
 
 //ROUTES
 //homepage route - redirects to employees

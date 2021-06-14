@@ -14,6 +14,7 @@ const employees_index = (request, response, next) => {
     //error handling
     try {
         response.json({ employees: employees });
+        
     } catch(err) {
         next(err);
     }
