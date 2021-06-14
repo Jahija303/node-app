@@ -13,7 +13,9 @@ let employees = require('../seeders/employeeSeeder');
 const employees_index = (request, response, next) => {
     //error handling
     try {
-        response.json({ employees: employees });
+        //response.json({ employees: employees });
+        response.setHeader('Content-Type', 'application/json');
+        response.end(JSON.stringify(employees));
     } catch(err) {
         next(err);
     }
@@ -35,7 +37,9 @@ const employees_index_status = (request, response, next) => {
             let employeesByStatus = employees.filter(employee => employee.status == status);
 
             //render the response with new array
-            response.json({ employees: employeesByStatus });
+            response.setHeader('Content-Type', 'application/json');
+            response.end(JSON.stringify(employeesByStatus));
+
         } else {
             //continue with the request matching against the uri's
             next();
@@ -65,7 +69,8 @@ const employees_details = (request, response, next) => {
                 let employee = employees.find(employee => employee.id == id)
                 
                 //render the response with the selected employee
-                response.json({ employee: employee });
+                response.setHeader('Content-Type', 'application/json');
+                response.end(JSON.stringify(employee));
 
             } else {
                 //render the error page if an employee has not been found
@@ -108,7 +113,8 @@ const employees_department = (request, response, next) => {
             let employeesByDepartment = employees.filter(employee => employee.departmentid == departmentid && employee.status == status);
 
             //render the response
-            response.json({ employees: employeesByDepartment });
+            response.setHeader('Content-Type', 'application/json');
+            response.end(JSON.stringify(employeesByDepartment));
         }
         else {
             //render the error page if the department id is not valid or not a number
@@ -149,8 +155,9 @@ const employees_create_post = (request, response, next) => {
         //add the new employee to the array
         employees.push(newEmployee);
 
-        //redirect to employees page
-        response.redirect('/employees');
+        //send the json response
+        response.setHeader('Content-Type', 'application/json');
+        response.end(JSON.stringify(employees));
         
     } catch(err) {
         //render the error page if an error is thrown
@@ -178,8 +185,9 @@ const employees_delete_by_id = (request, response, next) => {
                 //remove the employee from the array
                 employees.splice(employees.indexOf(employee), 1);
 
-                //render the employees page
-                response.redirect('/employees');
+                //send the json response
+                response.setHeader('Content-Type', 'application/json');
+                response.end(JSON.stringify(employees));
 
             } else {
                 //render the error page if an employee has not been found
@@ -252,8 +260,9 @@ const employees_put = (request, response, next) => {
                 //update the main array with the new employee
                 employees[index] = employee;
 
-                //render the employees page
-                response.redirect('/employees');
+                //send the json response
+                response.setHeader('Content-Type', 'application/json');
+                response.end(JSON.stringify(employees));
 
             } else {
                 //render the error page if an employee has not been found
