@@ -20,3 +20,27 @@ Request: Tue, 15 Jun 2021 01:16:23 GMT - DELETE /employees/4
 Response: status code 200, 0.518 ms
 Request: Tue, 15 Jun 2021 01:16:26 GMT - POST /translate/json 
 Response: status code 200, 3.906 ms
+Request: Tue, 15 Jun 2021 20:31:55 GMT - GET / 
+Response: status code 302, 4.703 ms
+Request: Tue, 15 Jun 2021 20:31:55 GMT - GET /employees 
+Response: status code 200, 0.379 ms
+Request: Tue, 15 Jun 2021 20:33:01 GMT - GET / 
+Response: status code 302, 5.647 ms
+Request: Tue, 15 Jun 2021 20:33:01 GMT - GET /employees 
+Response: status code 200, 0.379 ms
+Request: Tue, 15 Jun 2021 20:33:06 GMT - GET / 
+Response: status code 302, 0.493 ms
+Request: Tue, 15 Jun 2021 20:33:06 GMT - GET /employees 
+Response: status code 200, 0.328 ms
+Request: Tue, 15 Jun 2021 20:33:09 GMT - GET /employees/1 
+Response: status code 200, 0.675 ms
+Request: Tue, 15 Jun 2021 20:33:58 GMT - GET / 
+Response: status code 302, 6.125 ms
+Request: Tue, 15 Jun 2021 20:33:58 GMT - GET /employees 
+Response: status code 200, 0.706 ms
+Request: Tue, 15 Jun 2021 20:34:04 GMT - GET /employees/1 
+Response: status code 200, 0.779 ms
+Request: Tue, 15 Jun 2021 20:34:11 GMT - GET /department/2/employees 
+Response: status code 200, 0.473 ms
+Request: Tue, 15 Jun 2021 20:34:14 GMT - GET /department/2/employees/false 
+Response: status code 200, 0.441 ms

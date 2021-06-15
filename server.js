@@ -31,9 +31,12 @@ app.use(morgan('Request: :date[web] - :method :url ', { stream: accessLogStream 
 //use the morgan logger for response
 app.use(morgan('Response: status code :status, :response-time ms', { stream: accessLogStream } ));
 
+//add a custom port
+const port = process.env.port || 8080;
+
 //listen for requests
-app.listen(3000, () => {
-    console.log('Listening for requests at http://localhost:3000');
+app.listen(port, () => {
+    console.log(`Listening for requests at http://localhost:${port}`);
 });
 
 //cors - error fixing for angular data read
