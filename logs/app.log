@@ -44,3 +44,15 @@ Request: Tue, 15 Jun 2021 20:34:11 GMT - GET /department/2/employees
 Response: status code 200, 0.473 ms
 Request: Tue, 15 Jun 2021 20:34:14 GMT - GET /department/2/employees/false 
 Response: status code 200, 0.441 ms
+Request: Tue, 15 Jun 2021 22:13:08 GMT - GET / 
+Response: status code 302, 7.536 ms
+Request: Tue, 15 Jun 2021 22:13:08 GMT - GET /employees 
+Response: status code 200, 1.179 ms
+Request: Tue, 15 Jun 2021 22:13:09 GMT - GET /favicon.ico 
+Response: status code 404, 2.348 ms
+Request: Tue, 15 Jun 2021 22:13:12 GMT - GET /employees/1 
+Response: status code 200, 1.045 ms
+Request: Tue, 15 Jun 2021 22:13:14 GMT - GET /employees/2 
+Response: status code 200, 0.549 ms
+Request: Tue, 15 Jun 2021 22:13:17 GMT - GET /employees/8 
+Response: status code 404, 0.875 ms

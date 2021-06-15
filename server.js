@@ -31,13 +31,11 @@ app.use(morgan('Request: :date[web] - :method :url ', { stream: accessLogStream 
 //use the morgan logger for response
 app.use(morgan('Response: status code :status, :response-time ms', { stream: accessLogStream } ));
 
-//add a custom port
-const port = process.env.port || 8080;
+//set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-//listen for requests
-app.listen(port, () => {
-    console.log(`Listening for requests at http://localhost:${port}`);
-});
+//add a custom port
+const port = (process.env.port || 8080);
 
 //cors - error fixing for angular data read
 app.use(cors({origin: 'http://localhost:4200'}));
@@ -67,4 +65,13 @@ app.use((err, request, response, next) => {
     const status = err.status || 500;
     response.status(status);
     response.json({ title: 'Error ' + status, error: err.message });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+  });
+
+//listen for requests
+app.listen(port, () => {
+    console.log(`Listening for requests at http://localhost:${port}`);
 });
