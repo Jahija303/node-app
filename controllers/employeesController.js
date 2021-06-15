@@ -157,7 +157,7 @@ const employees_create_post = (request, response, next) => {
 
         //send the json response
         response.setHeader('Content-Type', 'application/json');
-        response.end(JSON.stringify(employees));
+        response.end(JSON.stringify(newEmployee));
         
     } catch(err) {
         //render the error page if an error is thrown
@@ -204,7 +204,7 @@ const employees_put = (request, response, next) => {
     try {
 
         //read the id from the request
-        const id = request.body.id;
+        let id = request.body.id;
 
         if(!id) {
             errorHandler.throwError("Please enter an employee ID...", 400);
@@ -215,6 +215,8 @@ const employees_put = (request, response, next) => {
         }
         //if it is a number, proceed with code
         else {
+
+            id = parseInt(request.body.id);
 
             //check if the employee with the provided id exists 
             if(employees.find(employee => employee.id == id)) {
