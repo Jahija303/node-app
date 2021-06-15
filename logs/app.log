@@ -32,3 +32,35 @@ Request: Tue, 15 Jun 2021 00:21:36 GMT - OPTIONS /employees/5
 Response: status code 204, 0.100 ms
 Request: Tue, 15 Jun 2021 00:21:36 GMT - DELETE /employees/5 
 Response: status code 200, 0.458 ms
+Request: Tue, 15 Jun 2021 01:01:46 GMT - GET /employees 
+Response: status code 200, 1.751 ms
+Request: Tue, 15 Jun 2021 01:01:51 GMT - OPTIONS /employees/1 
+Response: status code 204, 0.333 ms
+Request: Tue, 15 Jun 2021 01:01:51 GMT - DELETE /employees/1 
+Response: status code 200, 0.725 ms
+Request: Tue, 15 Jun 2021 01:01:52 GMT - OPTIONS /employees/2 
+Response: status code 204, 0.104 ms
+Request: Tue, 15 Jun 2021 01:01:52 GMT - DELETE /employees/2 
+Response: status code 200, 0.165 ms
+Request: Tue, 15 Jun 2021 01:01:53 GMT - OPTIONS /employees 
+Response: status code 204, 0.099 ms
+Request: Tue, 15 Jun 2021 01:01:53 GMT - PUT /employees 
+Response: status code 200, 0.727 ms
+Request: Tue, 15 Jun 2021 01:01:56 GMT - POST /employees 
+Response: status code 200, 0.285 ms
+Request: Tue, 15 Jun 2021 01:02:01 GMT - POST /employees 
+Response: status code 200, 0.603 ms
+Request: Tue, 15 Jun 2021 01:02:03 GMT - OPTIONS /employees 
+Response: status code 204, 0.112 ms
+Request: Tue, 15 Jun 2021 01:02:03 GMT - PUT /employees 
+Response: status code 200, 0.160 ms
+Request: Tue, 15 Jun 2021 01:02:03 GMT - PUT /employees 
+Response: status code 200, 0.148 ms
+Request: Tue, 15 Jun 2021 01:02:04 GMT - OPTIONS /employees/4 
+Response: status code 204, 0.101 ms
+Request: Tue, 15 Jun 2021 01:02:04 GMT - DELETE /employees/4 
+Response: status code 200, 0.169 ms
+Request: Tue, 15 Jun 2021 01:02:04 GMT - OPTIONS /employees/3 
+Response: status code 204, 0.102 ms
+Request: Tue, 15 Jun 2021 01:02:04 GMT - DELETE /employees/3 
+Response: status code 200, 0.130 ms
